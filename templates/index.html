@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Tabela-Verdade</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        Desenvolvido por Julio Cesar Santos Andrade. Para a matéria de Lógica Matemática do curso de Ciências da Computação da Universidade Paulista.
+      </header>
+    <div class="container">
+        <h1>Gerador de Tabela-Verdade</h1>
+
+        <form id="formExpressao" method="POST">
+            <input type="text" name="expressao" placeholder="Digite a expressão lógica (ex: p and q)" value="{{ expressao }}" required>
+            <button type="submit">Gerar Tabela-Verdade</button>
+        </form>        
+
+        {% if erro %}
+            <div class="erro">{{ erro }}</div>
+        {% endif %}
+
+        {% if tabela %}
+            <h2>Expressão: {{ expressao }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        {% for prop in proposicoes %}
+                            <th>{{ prop }}</th>
+                        {% endfor %}
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in tabela %}
+                        <tr>
+                            {% for valor in linha.valores %}
+                                <td>{{ 'V' if valor else 'F' }}</td>
+                            {% endfor %}
+                            <td>{{ 'V' if linha.resultado else 'F' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <div class="legenda">
+            <h3>Legenda dos Operadores Lógicos:</h3>
+            <ul>
+                <li><strong>and</strong> ou <strong>∧</strong>: Conjunção (E)</li>
+                <li><strong>or</strong> ou <strong>∨</strong>: Disjunção (OU)</li>
+                <li><strong>not</strong> ou <strong>¬</strong> ou <strong>~</strong>: Negação (NÃO)</li>
+                <li><strong>xor</strong> ou <strong>⊕</strong>: Disjunção Exclusiva (XOR)</li>
+                <li><strong>&lt;</strong>: Condicional (SE... ENTÃO)</li>
+                <li><strong>&lt;&gt;</strong>: Bicondicional (SE E SOMENTE SE)</li>
+            </ul>
+            <h3>Proposições Válidas:</h3>
+            <ul>
+                <li><strong>p</strong>, <strong>q</strong>, <strong>r</strong>, etc.: Variáveis proposicionais</li>
+                <li>Você pode usar letras minúsculas (ex.: <strong>p</strong>, <strong>q</strong>) como proposições lógicas.</li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+</html>
+
